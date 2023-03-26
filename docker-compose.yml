@@ -1,0 +1,29 @@
+version: "3.9"
+services:
+
+  app-maven:
+    container_name: baka-maven-3
+    build: .
+    working_dir: /apps
+    shm_size: 1g
+    tty: true
+    restart: unless-stopped
+    volumes:
+      - ./:/apps/
+      - ./src/main/resources/:/opt/portalconf/
+      - ./src/main/resources/keystore/:/opt/tomcat/conf/
+
+  db-mysql:
+    container_name: baka-mysql
+    image: mysql:5.7
+    restart: always
+    tty: true
+    shm_size: 1g
+    ports:
+      - target: 3306
+        published: 3306
+        protocol: tcp
+        mode: host
+    environment:
+      MYSQL_ROOT_PASSWORD: Seraph
+#      PGDATA: /var/lib/postgresql/data/pgdata
